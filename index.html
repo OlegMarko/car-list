@@ -31,7 +31,9 @@
 
             <ul class="list-group">
                 <li
-                    v-for="car in cars"
+                    v-for="(car, index) in cars"
+                    @click="selectCar(index)"
+                    :class="{'active': selectedCar === index}"
                     class="list-group-item list-group-item-action pointer"
                 >{{ car.name }} - {{ car.model }}</li>
             </ul>
@@ -39,21 +41,26 @@
         <div class="col-md-8 pt-3">
             <div class="row">
                 <div class="col-md-5">
-                    <h2>Ford</h2>
-                    <img src="images/focus.jpg" alt="focus" class="rounded w-100">
+                    <h2>{{ car.name }}</h2>
+                    <img
+                        :src="car.image"
+                        :alt="car.model"
+                        class="rounded w-100">
                 </div>
                 <div class="col-md-7 pt-2">
                     <h5>Car Details</h5>
 
                     <ul>
-                        <li>Model - <strong>Focus</strong></li>
-                        <li>Year - <strong>2015</strong></li>
-                        <li>Owner - <strong>Oleg</strong></li>
+                        <li>Model - <strong>{{ car.model }}</strong></li>
+                        <li>Year - <strong>{{ car.year }}</strong></li>
+                        <li>Owner - <strong>{{ car.owner }}</strong></li>
                     </ul>
 
-                    <p>+380 98 123 45 67</p>
+                    <div class="phone-block">
+                        <p v-if="phoneVisibility">{{ car.phone }}</p>
+                    </div>
 
-                    <button class="btn btn-outline-success mr-3">Show Phone</button>
+                    <button @click="togglePhone" class="btn btn-outline-success mr-3">{{ phoneBtnText }}</button>
                     <button class="btn btn-primary">Buy</button>
                 </div>
             </div>
