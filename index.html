@@ -24,14 +24,20 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label for="search">Find your car</label>
-                <input type="text" class="form-control" id="search" placeholder="Name, Model ...">
+                <input
+                    v-model="search"
+                    type="search"
+                    autocomplete="off"
+                    class="form-control"
+                    id="search"
+                    placeholder="Name, Model ...">
             </div>
 
             <hr>
 
             <ul class="list-group">
                 <li
-                    v-for="(car, index) in cars"
+                    v-for="(car, index) in filteredCars"
                     @click="selectCar(index)"
                     :class="{'active': selectedCar === index}"
                     class="list-group-item list-group-item-action pointer"

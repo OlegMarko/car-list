@@ -14,7 +14,8 @@ new Vue({
             cars,
             car: cars[0],
             selectedCar: 0,
-            phoneVisibility: false
+            phoneVisibility: false,
+            search: ''
         }
     },
     methods: {
@@ -29,6 +30,12 @@ new Vue({
     computed: {
         phoneBtnText() {
             return this.phoneVisibility ? 'Hide Phone' : 'Show Phone';
+        },
+        filteredCars() {
+            return this.cars.filter(car => {
+                return (car.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1) ||
+                        (car.model.toLowerCase().indexOf(this.search.toLowerCase()) > -1)
+            });
         }
     }
 });
