@@ -20,7 +20,7 @@
             <h1>Cars App</h1>
         </div>
     </div>
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-md-4">
             <div class="form-group">
                 <label for="search">Find your car</label>
@@ -63,15 +63,65 @@
                     </ul>
 
                     <div class="phone-block">
-                        <p v-if="phoneVisibility">{{ car.phone }}</p>
+                        <transition name="phone">
+                            <p v-if="phoneVisibility">{{ car.phone }}</p>
+                        </transition>
                     </div>
 
                     <button @click="togglePhone" class="btn btn-outline-success mr-3">{{ phoneBtnText }}</button>
-                    <button class="btn btn-primary">Buy</button>
+                    <button @click="modalVisibility = true" class="btn btn-primary">Buy</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="row pt-3" v-if="logs.length > 0">
+        <div class="col-md-12">
+            <ul class="list-group">
+                <li v-for="log in logs"
+                    class="list-group-item"
+                    :class="{
+                        'list-group-item-secondary': log.type === 'cancel',
+                        'list-group-item-success': log.type === 'ok',
+                    }"
+                >
+                    {{ log.text }} .. {{ log.date | date }}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <transition name="modal">
+        <div v-if="modalVisibility" class="modal fade show" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Do you want to buy this car?</h5>
+                    <button @click="modalVisibility = false" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Current car - <strong>{{ car.name }}</strong></p>
+
+                    <ul>
+                        <li>Model - <strong>{{ car.model }}</strong></li>
+                        <li>Year - <strong>{{ car.year }}</strong></li>
+                        <li>Owner - <strong>{{ car.owner }}</strong></li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button @click="newOrder" type="button" class="btn btn-primary">Buy</button>
+                    <button @click="cancelOrder" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </transition>
+    <transition name="fade">
+        <div v-if="modalVisibility" class="modal-backdrop fade show"></div>
+    </transition>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
